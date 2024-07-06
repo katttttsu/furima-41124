@@ -5,16 +5,17 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :nickname,presence: true
-  validates :email,presence: true
-  validates :encrypted_password,presence: true
   validates :first_name,presence: true
   validates :last_name,presence: true
   validates :first_name_kana,presence: true
   validates :last_name_kana,presence: true
   validates :birthday,presence: true
+  validates :password, format: { with: /\A(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]+\z/, message: "must contain both letters and numbers" }
+  validates :last_name, :first_name, format: { with: /\A[\p{Han}\p{Hiragana}\p{Katakana}]+\z/, message: "must be full-width Japanese characters" }
+  validates :last_name_kana, :first_name_kana, format:  { with: /\A[\p{Katakana}ー]+\z/, message: "must be full-width katakana characters" }
 
-  has_many :items
-  has_many :Purchase_histories
+  #has_many :items
+  #has_many :Purchase_histories
 
   
 end
