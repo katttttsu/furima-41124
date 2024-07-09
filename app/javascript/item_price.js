@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
       feeDisplay.textContent = `${fee}`;
       profitDisplay.textContent = `${profit}`;
     } else {
-      feeDisplay.textContent = '0円';
-      profitDisplay.textContent = '0円';
+      feeDisplay.textContent = '0';
+      profitDisplay.textContent = '0';
     }
   });
 });
