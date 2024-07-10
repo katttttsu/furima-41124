@@ -1,16 +1,21 @@
 require 'rails_helper'
 RSpec.describe Item, type: :model do
-
   before do
     @item = FactoryBot.build(:item)
+    @user = FactoryBot.create(:user)  # FactoryBotを使用してユーザーを作成
+    @item = FactoryBot.build(:item, user: @user)  # アイテムにユーザーを割り当てる
   end
-
+  
   describe "新規出品登録" do
-    context '新規出品が出来る時' do
 
+    context '新規出品が出来る時' do
       it '全ての項目が入力されていれば登録できる' do
         expect(@item).to be_valid
       end
+    end
+
+
+    context '新規出品が出来ない時' do
 
       it '画像が空であれば登録できない' do
         @item.image = nil
@@ -19,13 +24,13 @@ RSpec.describe Item, type: :model do
       end
 
       it '商品名が空では登録できない' do
-        @item.item_name = nil
+        @item.item_name = ''
         @item.valid?
         expect(@item.errors.full_messages).to include("Item name can't be blank")
       end
 
       it '商品説明が空では登録できない' do
-        @explanation = FactoryBot.build(:item, explanation: nil)
+        @explanation = FactoryBot.build(:item, explanation: '')
         @explanation.valid?
         expect(@explanation.errors.full_messages).to include("Explanation can't be blank")
       end
@@ -76,6 +81,12 @@ RSpec.describe Item, type: :model do
         item = FactoryBot.build(:item, price: 10000000)
         item.valid?
         expect(item.errors.full_messages).to include("Price must be less than or equal to 9999999")
+      end
+
+      it 'userが紐づいてなければ出品できない' do
+        @item.user = nil
+        @item.valid?
+        expect(@item.errors.full_messages).to include('User must exist')
       end
     end
   end
