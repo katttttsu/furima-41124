@@ -1,4 +1,7 @@
 class Item < ApplicationRecord
+  def sold?
+    buyer_id.present?
+  end
 
   belongs_to :user
 
