@@ -1,6 +1,9 @@
 class ItemsController < ApplicationController
   before_action :authenticate_user!, only: [:create, :new, :edit, :update, :destroy]
- 
+  
+  def index
+    @items = Item.order(created_at: :desc)
+  end
 
   def new
     @item = Item.new
@@ -13,6 +16,10 @@ class ItemsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def sold?
+    buyer_id.present?
   end
 
   private
