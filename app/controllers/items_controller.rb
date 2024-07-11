@@ -29,7 +29,7 @@ class ItemsController < ApplicationController
   
   def update
     if @item.update(item_params)
-      redirect_to root_path, notice: 'Item was successfully updated.'
+      redirect_to item_path(@item), notice: 'Item was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -48,6 +48,5 @@ class ItemsController < ApplicationController
   def set_item
     @item = Item.find(params[:id])
   end
-
 
 end
