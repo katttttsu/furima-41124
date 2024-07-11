@@ -5,6 +5,10 @@ class Item < ApplicationRecord
 
   belongs_to :user
 
+  def sold?
+    !buyer_id.nil?
+  end
+
 
   #has_one :Purchase_history
   has_one_attached :image
