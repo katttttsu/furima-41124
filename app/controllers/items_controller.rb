@@ -24,14 +24,12 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    if current_user != @item.user
-      redirect_to root_path, alert: 
     end
   end
   
   def update
     if @item.update(item_params)
-      redirect_to root_path, notice: 'Item was successfully updated.'
+      redirect_to item_path(@item), notice: 'Item was successfully updated.'
     else
       render :edit, status: :unprocessable_entity
     end
