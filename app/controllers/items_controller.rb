@@ -1,6 +1,6 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:create, :new, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update]
+  before_action :authenticate_user!, only: [:create, :new, :edit, :update]
   
   def index
     @items = Item.order(created_at: :desc)
@@ -11,11 +11,10 @@ class ItemsController < ApplicationController
   end
 
   def create
-    @item = Item.new(item_params)
     if @item.save
       redirect_to root_path, notice: 'Item was successfully created.'
     else
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 
@@ -23,20 +22,19 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    unless @item.sold? && @item.user_id == current_user.id
-      redirect_to root_path, alert: "この商品の編集は許可されていません。"
+    if current_user != @item.user
+      redirect_to root_path, alert: 
     end
   end
   
-  def destroy
-    if @item.sold? && @item.user_id == current_user.id
-      @item.destroy
-      redirect_to root_path, notice: "商品を削除しました。"
+  def update
+    if @item.update(item_params)
+      redirect_to root_path, notice: 'Item was successfully updated.'
     else
-      redirect_to root_path, alert: "この商品の削除は許可されていません。"
+      render :edit, status: :unprocessable_entity
     end
   end
-  
+
   def sold?
     buyer_id.present?
   end
