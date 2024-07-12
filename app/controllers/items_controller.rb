@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update]
   before_action :authenticate_user!, only: [:create, :new, :edit, :update]
+  before_action :check_user, only: [:edit, :update]
   
   def index
     @items = Item.order(created_at: :desc)
@@ -11,6 +12,7 @@ class ItemsController < ApplicationController
   end
 
   def create
+    @item = Item.new(item_params)
     if @item.save
       redirect_to root_path, notice: 'Item was successfully created.'
     else
@@ -48,6 +50,10 @@ class ItemsController < ApplicationController
   def set_item
     @item = Item.find(params[:id])
   end
-
-
+  
+  def check_user
+    unless current_user == @item.user
+      redirect_to root_path, alert: "この商品の編集は許可されていません。"
+    end
+  end
 end
