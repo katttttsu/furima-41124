@@ -59,12 +59,8 @@ class PurchaseHistoriesController < ApplicationController
     end
   end
 
-  def user_can_purchase?
-    !current_user.nil? && (@item.buyer_id.nil? || current_user == @item.user)
-  end
-
   def prevent_access_to_purchase_histories_page
-    if request.path == item_purchase_histories_path(@item) && !user_can_purchase?
+    if request.path == item_purchase_histories_path(@item)
       redirect_to root_path, alert: 'This page access is restricted.'
     end
   end
