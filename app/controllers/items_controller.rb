@@ -41,11 +41,14 @@ class ItemsController < ApplicationController
   end
 
 
-  def sold?
-    buyer_id.present?
-  end
-
   private
+
+  def redirect_if_sold
+    @item = Item.find(params[:id])
+    if @item.sold?
+      redirect_to root_path, alert: "This item has already been sold."
+    end
+  end
 
   def item_params
     params.require(:item).permit(:item_name, :image, :explanation, :category_id, :condition_id, :shipping_charge_id, :prefecture_id, :shipping_date_id, :price).merge(user_id: current_user.id)
@@ -61,9 +64,4 @@ class ItemsController < ApplicationController
     end
   end
 
-  def redirect_if_sold
-    if @item.sold?
-      redirect_to root_path, notice: 'Sorry, this item has already been sold.'
-    end
-  end
 end
