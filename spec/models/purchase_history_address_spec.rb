@@ -26,6 +26,12 @@ RSpec.describe PurchaseHistoryAddress, type: :model do
         expect(@purchase_history_address.errors.full_messages).to include("Postal code can't be blank")
       end
 
+      it '郵便番号は『３桁ハイフン４桁』でないと保存できないこと' do
+        @purchase_history_address.postal_code = '123-123'
+        @purchase_history_address.valid?
+        expect(@purchase_history_address.errors.full_messages).to include("Postal code is invalid. Include hyphen(-)")
+      end
+
       it 'postal_codeがハイフンなしでは保存できないこと' do
         @purchase_history_address.postal_code = '1234567'
         @purchase_history_address.valid?
@@ -79,7 +85,24 @@ RSpec.describe PurchaseHistoryAddress, type: :model do
         @purchase_history_address.valid?
         expect(@purchase_history_address.errors.full_messages).to include("Phone is not a number")
       end
+      
+      it "tokenが空では登録できないこと" do
+        @purchase_history_address.token = nil
+        @purchase_history_address.valid?
+        expect(@purchase_history_address.errors.full_messages).to include("Token can't be blank")
+      end
 
+      it 'user_idが紐づいていなければ購入できないこと' do
+        @purchase_history_address.user_id = ''
+        @purchase_history_address.valid?
+        expect(@purchase_history_address.errors.full_messages).to include("User can't be blank")
+      end
+
+      it 'item_idが紐づいていなければ購入できないこと' do
+        @purchase_history_address.item_id = ''
+        @purchase_history_address.valid?
+        expect(@purchase_history_address.errors.full_messages).to include("Item can't be blank")
+      end
     end
   end
 end

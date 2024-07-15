@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:create, :new, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update, :destroy]
+  before_action :redirect_if_sold, only: [:edit, :update, :destroy]
   
   def index
     @items = Item.order(created_at: :desc)
@@ -56,7 +57,13 @@ class ItemsController < ApplicationController
   
   def check_user
     unless current_user == @item.user
-      redirect_to root_path, alert: "この商品の編集は許可されていません。"
+      redirect_to root_path, alert: "You are not authorized to edit this item."
+    end
+  end
+
+  def redirect_if_sold
+    if @item.sold?
+      redirect_to root_path, notice: 'Sorry, this item has already been sold.'
     end
   end
 end
