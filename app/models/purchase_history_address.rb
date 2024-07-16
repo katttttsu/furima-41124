@@ -1,6 +1,6 @@
 class PurchaseHistoryAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :street, :building, :phone
+  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :street, :building, :phone, :token
 
   with_options presence: true do
     validates :user_id
