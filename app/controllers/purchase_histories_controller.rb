@@ -15,7 +15,6 @@ class PurchaseHistoriesController < ApplicationController
     if params[:token].present? && @purchase_history_address.valid?
       pay_item
       @purchase_history_address.save
-      create_purchase_history
       redirect_to root_path, notice: 'Purchase completed.'
     else
       gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
@@ -40,10 +39,6 @@ class PurchaseHistoriesController < ApplicationController
       card: purchase_history_params[:token],
       currency: 'jpy'
     )
-  end
-
-  def create_purchase_history
-    PurchaseHistory.create(user_id: current_user.id, item_id: @item.id)
   end
 
     def redirect_if_sold
