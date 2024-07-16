@@ -1,5 +1,4 @@
 class PurchaseHistoriesController < ApplicationController
-  before_action :authenticate_user!, except: :index
   before_action :set_item, only: [:index, :create]
   before_action :authenticate_user!, only: [:index, :create]
   before_action :redirect_if_sold, only: [:index, :create]
@@ -20,7 +19,7 @@ class PurchaseHistoriesController < ApplicationController
       redirect_to root_path, notice: 'Purchase completed.'
     else
       gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
-      render 'purchase_histories/index', status: :unprocessable_entity
+      render 'index', status: :unprocessable_entity
     end
   end
 

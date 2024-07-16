@@ -44,7 +44,6 @@ class ItemsController < ApplicationController
   private
 
   def redirect_if_sold
-    @item = Item.find(params[:id])
     if @item.sold?
       redirect_to root_path, alert: "This item has already been sold."
     end

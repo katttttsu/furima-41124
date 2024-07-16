@@ -1,6 +1,6 @@
 class PurchaseHistoryAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :street, :building, :phone, :price, :token
+  attr_accessor :user_id, :item_id, :postal_code, :prefecture_id, :city, :street, :building, :phone
 
   with_options presence: true do
     validates :user_id
@@ -9,8 +9,8 @@ class PurchaseHistoryAddress
     validates :prefecture_id, numericality: { other_than: 1, message: "can't be blank" }
     validates :city
     validates :street
-    validates :phone, presence: true, length: { minimum: 10, maximum: 11 }, numericality: { only_integer: true }
-    validates :token, presence: true
+    validates :phone, length: { minimum: 10, maximum: 11 }, numericality: { only_integer: true }
+    validates :token
   end
 
   def save
